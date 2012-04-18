@@ -14,7 +14,7 @@ class OAuth2_Provider_Lincoln extends OAuth2_Provider
     /**
      * @var  string  default scope (useful if a scope is required for user info)
      */
-    protected $scope = array('user.basic');//Defaults basic info not empty
+    protected $scope = array('user.basic,user.courses,user.contact,user.print.balance');//Defaults basic info not empty
 	
     /**
      * @var  string  the method to use when requesting tokens
