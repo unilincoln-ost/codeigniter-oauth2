@@ -29,9 +29,10 @@ class OAuth2_Provider_Lincoln extends OAuth2_Provider
 	public function url_access_token()
 	{
 		return 'https://sso.lincoln.ac.uk/oauth/access_token';
-	}	
-
-    public function get_user_info(OAuth2_Token_Access $token)
+	}
+	
+    //Gets the user info using the people API
+    public function get_printer_info(OAuth2_Token_Access $token)
     {
         $url = 'https://nucleus.lincoln.ac.uk/v1/people/user?' . http_build_query(array(
             'access_token' => $token->access_token
@@ -41,6 +42,19 @@ class OAuth2_Provider_Lincoln extends OAuth2_Provider
 		$user = $user->results[0];
 		return $user;
     }
+	
+	//Gets the printer info using the printer API
+	public function get_user_info(OAuth2_Token_Access $token)
+    {
+        $url = 'https://nucleus.lincoln.ac.uk/v1/printing/user?' . http_build_query(array(
+            'access_token' => $token->access_token
+        ));
+
+        $user = json_decode(file_get_contents($url));
+		$user = $user->results[0];
+		return $user;
+    }
+	
 
 }
  
