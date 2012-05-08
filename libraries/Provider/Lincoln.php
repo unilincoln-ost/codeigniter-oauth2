@@ -15,6 +15,10 @@ class OAuth2_Provider_Lincoln extends OAuth2_Provider
      * @var  string  default scope (useful if a scope is required for user info)
      */
     protected $scope = array('user.basic,user.courses,user.contact,user.print.balance');//Defaults basic info not empty
+    
+    
+    
+    
 	
     /**
      * @var  string  the method to use when requesting tokens
@@ -29,32 +33,53 @@ class OAuth2_Provider_Lincoln extends OAuth2_Provider
 	public function url_access_token()
 	{
 		return 'https://sso.lincoln.ac.uk/oauth/access_token';
-	}
+	}	
 	
-    //Gets the user info using the people API
-    public function get_printer_info(OAuth2_Token_Access $token)
+	//Gets the user info using the people API
+	public function get_user_info(OAuth2_Token_Access $token)
     {
         $url = 'https://nucleus.lincoln.ac.uk/v1/people/user?' . http_build_query(array(
             'access_token' => $token->access_token
         ));
-
-        $user = json_decode(file_get_contents($url));
-		$user = $user->results[0];
-		return $user;
-    }
+		
+        $user = json_decode(file_get_contents($url));		
+		
+		//Checks to see if an error has occured.
+		if($user->error===true)
+		{
+			//If so simply returns the error message of the problem
+			return $user->message;		
+		}
+		else
+		{
+			//Otherwise returns the information like normal.
+			return $user->results[0];	
+			
+		}		
+    }	
 	
 	//Gets the printer info using the printer API
-	public function get_user_info(OAuth2_Token_Access $token)
+	public function get_print_info(OAuth2_Token_Access $token)
     {
         $url = 'https://nucleus.lincoln.ac.uk/v1/printing/user?' . http_build_query(array(
             'access_token' => $token->access_token
         ));
 
         $user = json_decode(file_get_contents($url));
-		$user = $user->results[0];
-		return $user;
+		
+		//Checks to see if an error has occured.
+		if($user->error===true)
+		{
+			//If so simply returns the error message of the problem
+			return $user->message;		
+		}
+		else
+		{
+			//Otherwise returns the information like normal.
+			return $user->results[0];	
+			
+		}
     }
-	
 
 }
  
