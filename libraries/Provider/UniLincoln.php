@@ -45,7 +45,7 @@ class OAuth2_Provider_Lincoln extends OAuth2_Provider
 
 		else
 		{
-			$user = json_decode($fetch))
+			$user = json_decode($fetch));
 
 			if ($user === NULL)
 			{
