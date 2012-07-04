@@ -9,7 +9,7 @@
  * @license    http://philsturgeon.co.uk/code/dbad-license
  */
 
-class OAuth2_Provider_Lincoln extends OAuth2_Provider
+class OAuth2_Provider_Unilincoln extends OAuth2_Provider
 {
 	/**
 	 * @var  string  default scope (useful if a scope is required for user info)
