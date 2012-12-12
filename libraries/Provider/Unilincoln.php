@@ -34,7 +34,7 @@ class OAuth2_Provider_Unilincoln extends OAuth2_Provider
 	//Gets the user info using the people API
 	public function get_user_info(OAuth2_Token_Access $token)
 	{
-		$url = 'https://nucleus.lincoln.ac.uk/v1/people/user?' . http_build_query(array(
+		$url = 'https://nucleus-proxy.online.lincoln.ac.uk/v1/people/user?' . http_build_query(array(
 			'access_token' => $token->access_token
 		));
 
@@ -56,7 +56,7 @@ class OAuth2_Provider_Unilincoln extends OAuth2_Provider
 			if ($user->error === TRUE)
 			{
 				//If so simply returns the error message of the problem
-				throw new OAuth2_Exception('$user->message');		
+				throw new OAuth2_Exception($user->message);		
 			}
 			else
 			{
