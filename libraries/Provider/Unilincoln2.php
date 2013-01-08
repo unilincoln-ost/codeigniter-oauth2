@@ -34,7 +34,7 @@ class OAuth2_Provider_Unilincoln2 extends OAuth2_Provider
 	//Gets the user info using the people API
 	public function get_user_info(OAuth2_Token_Access $token)
 	{
-		$url = 'https://n2.online.lincoln.ac.uk/people?' . http_build_query(array(
+		$url = 'https://n2.online.lincoln.ac.uk/people/me?' . http_build_query(array(
 			'access_token' => $token->access_token
 		));
 
@@ -61,7 +61,7 @@ class OAuth2_Provider_Unilincoln2 extends OAuth2_Provider
 			else
 			{
 				//Otherwise returns the information like normal.
-				return $user->results[0];
+				return $user->result;
 			}
 		}
 	}
