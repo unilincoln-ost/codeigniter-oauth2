@@ -40,6 +40,11 @@ abstract class OAuth2_Provider
 	 * @var  string  default scope (useful if a scope is required for user info)
 	 */
 	protected $scope;
+	
+	/**
+	 * @var  string  state variable to be passed through chain
+	 */
+	protected $state;
 
 	/**
 	 * @var  string  scope separator, most use "," but some like Google are spaces
@@ -89,6 +94,17 @@ abstract class OAuth2_Provider
 	{
 		return $this->$key;
 	}
+	
+	/**
+	 * Sets the value of any protected class variable.
+	 *
+	 * @param   string  variable name
+	 * @return  mixed
+	 */
+	public function __set($key, $value)
+	{
+		$this->$key = $value;
+	}
 
 	/**
 	 * Returns the authorization URL for the provider.
@@ -113,17 +129,19 @@ abstract class OAuth2_Provider
 	*/	
 	public function authorize($options = array())
 	{
-		$state = md5(uniqid(rand(), TRUE));
-		get_instance()->session->set_userdata('state', $state);
 
 		$params = array(
 			'client_id' 		=> $this->client_id,
 			'redirect_uri' 		=> isset($options['redirect_uri']) ? $options['redirect_uri'] : $this->redirect_uri,
-			'state' 			=> $state,
 			'scope'				=> is_array($this->scope) ? implode($this->scope_seperator, $this->scope) : $this->scope,
 			'response_type' 	=> 'code',
 			'approval_prompt'   => 'force' // - google force-recheck
 		);
+		
+		if (isset($this->state))
+		{
+			$params['state'] = $this->state;
+		}
 		
 		redirect($this->url_authorize().'?'.http_build_query($params));
 	}
